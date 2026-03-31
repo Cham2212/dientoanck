@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Hệ thống đặt vé</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      margin-top: 0;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px 0;
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    .log {
+      background: #000;
+      color: #0f0;
+      padding: 10px;
+      height: 200px;
+      overflow-y: auto;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="card">
+    <h2>Đặt vé</h2>
+    <input id="message" placeholder="Nhập nội dung..." />
+    <button onclick="book()">Gửi request</button>
+  </div>
+
+  <div class="card">
+    <h2>Log hệ thống</h2>
+    <button onclick="loadLogs()">Load log</button>
+    <div id="logs" class="log"></div>
+  </div>
+
+</div>
+
+<script>
+  const BASE_URL = "http://localhost:8080/api";
+
+  function book() {
+    const message = document.getElementById("message").value;
+
+    fetch(BASE_URL + "/book", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ message: message })
+    })
+    .then(res => res.text())
+    .then(data => {
+      alert(data);
+      loadLogs();
+    })
+    .catch(err => alert("Lỗi: " + err));
+  }
+
+  function loadLogs() {
+    fetch(BASE_URL + "/log")
+      .then(res => res.json())
+      .then(data => {
+        const logDiv = document.getElementById("logs");
+        logDiv.innerHTML = "";
+        data.forEach(log => {
+          logDiv.innerHTML += log + "<br/>";
+        });
+      });
+  }
+</script>
+
+</body>
+</html>

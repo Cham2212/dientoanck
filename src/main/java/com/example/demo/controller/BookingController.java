@@ -19,15 +19,15 @@ public class BookingController {
     @Value("${server.id}")
     private String serverId;
 
-    @PostMapping("/book")
-    public String book(@RequestBody Booking b) {
-        service.book(b, serverId);
-        return "Booked from SERVER " + serverId;
+    @PostMapping("/replicate")
+    public String replicate(@RequestBody Booking b) {
+        service.replicate(b, serverId);
+        return "OK";
     }
 
     @GetMapping("/log")
     public List<String> logs() {
         return service.getLogs();
     }
-    
+
 }

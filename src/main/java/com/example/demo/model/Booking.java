@@ -13,6 +13,7 @@ public class Booking {
     private String room;
     private String checkin;
     private String checkout;
+    private boolean replicated;
 
     // getter setter
 }
